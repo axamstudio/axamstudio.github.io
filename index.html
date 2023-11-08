@@ -17,8 +17,7 @@
 <body>
     <div id="canvas-container"></div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
     <script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -28,11 +27,14 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas-container').appendChild(renderer.domElement);
 
-        const loader = new THREE.GLTFLoader();
-        loader.load('axam_3D_patch_LowPoly.glb', function (gltf) {
-            const logo = gltf.scene;
-            scene.add(logo);
-        });
+        const textureLoader = new THREE.TextureLoader();
+        const imageTexture = textureLoader.load('axam_patch_white.png'); // Replace 'path_to_your_image.png' with the actual path to your image
+
+        const planeGeometry = new THREE.PlaneGeometry(2, 2);
+        const planeMaterial = new THREE.MeshBasicMaterial({ map: imageTexture });
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+
+        scene.add(plane);
 
         const render = () => {
             requestAnimationFrame(render);
