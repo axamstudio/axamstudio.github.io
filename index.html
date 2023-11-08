@@ -1,89 +1,56 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>axam studio</title>
+    <title>Your Portfolio</title>
     <style>
         body {
             margin: 0;
-            overflow: hidden;
-            background-color: black;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 100px 0; /* 100px padding at the top and bottom */
+            padding: 0;
+            background-color: #000;
         }
-
-        #title {
-            font-size: 36px; /* Larger font size */
-            color: white;
-            text-align: center;
-            margin-top: 20px;
-            font-family: 'Arial', sans-serif; /* Custom font (Change 'Arial' to your desired font) */
+        #canvas-container {
+            width: 100%;
+            height: 100vh;
         }
     </style>
 </head>
 <body>
-    <div id="title">axam studio</div>
+    <div id="canvas-container"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
+        // Create a scene
         const scene = new THREE.Scene();
+
+        // Create a camera
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        const loader = new THREE.GLTFLoader();
-        let logo;
-
-        const ambientLight = new THREE.AmbientLight(0x404040);
-        scene.add(ambientLight);
-
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
-        directionalLight.position.set(1, 1, 1);
-        scene.add(directionalLight);
-
-        loader.load('axam_3D_patch_LowPoly.gltf', (gltf) => {
-            logo = gltf.scene;
-
-            const metallicMaterial = new THREE.MeshStandardMaterial({
-                color: 0xffffff,
-                metalness: 1,
-                roughness: 0.2
-            });
-
-            logo.traverse((child) => {
-                if (child.isMesh) {
-                    child.material = metallicMaterial;
-                }
-            });
-
-            logo.scale.set(0.1, 0.1, 0.1);
-            logo.position.set(0, 0, -2);
-
-            scene.add(logo);
-
-            const animate = () => {
-                requestAnimationFrame(animate);
-                logo.rotation.x += 0.005;
-                logo.rotation.y += 0.005;
-                renderer.render(scene, camera);
-            };
-            animate();
-        });
-
         camera.position.z = 5;
 
-        window.addEventListener('resize', () => {
-            const newWidth = window.innerWidth;
-            const newHeight = window.innerHeight;
-            camera.aspect = newWidth / newHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(newWidth, newHeight);
-        });
+        // Create a renderer
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Create a cube
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        // Define the render function
+        const render = () => {
+            requestAnimationFrame(render);
+
+            // Rotate the cube
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.01;
+
+            // Render the scene
+            renderer.render(scene, camera);
+        };
+
+        // Call the render function
+        render();
     </script>
 </body>
 </html>
