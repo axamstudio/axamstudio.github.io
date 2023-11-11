@@ -17,24 +17,26 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+    const loader = new GLTFLoader();
+            
+            // Load your 3D logo model
+            loader.load('axam_3D_patch_LowPoly', (gltf) => {
+                const logo = gltf.scene;
+                scene.add(logo);
+            });
 
-    camera.position.z = 5;
+            camera.position.z = 5;
 
-    const animate = function () {
-      requestAnimationFrame(animate);
+            const animate = function () {
+                requestAnimationFrame(animate);
 
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
+                // Add animation logic if needed
 
-      renderer.render(scene, camera);
-    };
+                renderer.render(scene, camera);
+            };
 
-    animate();
-  }
+            animate();
+        }
 
       </script>
       
